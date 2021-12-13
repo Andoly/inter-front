@@ -40,10 +40,12 @@ export const ButtonContainer = styled.div`
     font-size: 0.75rem;
     font-weight: 400;
     color: ${({ theme }) => theme.colors.secondary};
+    font-family: Roboto, sans-serif;
 
     a {
       font-size: 1rem;
       font-weight: 700;
+      font-family: Roboto, sans-serif;
     }
   }
 `;
