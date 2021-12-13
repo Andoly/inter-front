@@ -1,3 +1,8 @@
+import Header from "../../components/Header";
+import * as S from "./styles";
+
 export const Dashboard = () => {
-  return <h5>Dashboard</h5>;
+  return (
+    <Header />
+  );
 };
