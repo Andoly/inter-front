@@ -10,7 +10,7 @@ interface StatementItem {
     lastName: string;
   };
   value: number;
-  type: "pay" | "received";
+  type: "paid" | "received";
   updatedAt: Date;
 }
 
@@ -33,7 +33,7 @@ const StatementItemComponent = ({
           })}
         </p>
         <p>
-          {type === "pay" ? `Pago a ` : `Recebido de`}{" "}
+          {type === "paid" ? `Pago a ` : `Recebido de`}{" "}
           <strong>
             {user.firstName} {user.lastName}
           </strong>
