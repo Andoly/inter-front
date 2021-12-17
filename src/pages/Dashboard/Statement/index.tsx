@@ -1,6 +1,8 @@
+import { useEffect, useState } from "react";
 import * as S from "./styles";
 import { FiDollarSign } from "react-icons/fi";
 import { format } from "date-fns";
+import { transactions } from "../../../services/resources/pix";
 
 interface StatementItem {
   user: {
@@ -12,7 +14,12 @@ interface StatementItem {
   updatedAt: Date;
 }
 
-const StatementItem = ({ user, value, type, updatedAt }: StatementItem) => {
+const StatementItemComponent = ({
+  user,
+  value,
+  type,
+  updatedAt,
+}: StatementItem) => {
   return (
     <S.StatementItemContainer>
       <S.StatementItemImage type={type}>
@@ -25,44 +32,38 @@ const StatementItem = ({ user, value, type, updatedAt }: StatementItem) => {
             currency: "BRL",
           })}
         </p>
-        <p className="">
+        <p>
           {type === "pay" ? `Pago a ` : `Recebido de`}{" "}
           <strong>
             {user.firstName} {user.lastName}
           </strong>
         </p>
-        <p className="">{format(updatedAt, "dd/MM/yyyy 'às' HH:mm'h'")}</p>
+        <p>
+          {format(new Date(updatedAt), "dd/MM/yyyy 'às' HH:mm'h'")}
+        </p>
       </S.StatementItemInfo>
     </S.StatementItemContainer>
   );
 };
 
 const Statement = () => {
-  const statements: StatementItem[] = [
-    {
-      user: {
-        firstName: "Andoly",
-        lastName: "Borges",
-      },
-      value: 220.0,
-      type: "pay",
-      updatedAt: new Date(),
-    },
-    {
-      user: {
-        firstName: "José",
-        lastName: "Cardozo",
-      },
-      value: 370.0,
-      type: "received",
-      updatedAt: new Date(),
-    },
-  ];
+  const [statements, setStatements] = useState<StatementItem[]>([]);
+
+  const getAllTransactions = async () => {
+    const { data } = await transactions();
+    setStatements(data.transactions);
+  };
+
+  useEffect(() => {
+    getAllTransactions();
+  }, []);
+
   return (
     <S.StatementContainer>
-      {statements.map((statement) => (
-        <StatementItem {...statement} />
-      ))}
+      {statements.length > 0 &&
+        statements.map((statement) => (
+          <StatementItemComponent {...statement} />
+        ))}
     </S.StatementContainer>
   );
 };

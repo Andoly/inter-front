@@ -6,8 +6,16 @@ import Header from "../../components/Header";
 import Input from "../../components/Input";
 import Statement from "./Statement";
 
+import useAuth from "../../hooks/useAuth";
+import { useEffect } from "react";
+
 export const Dashboard = () => {
-  const wallet = 5000;
+  const { user, getCurrentUser } = useAuth();
+
+  useEffect(() => {
+    getCurrentUser();
+  },[])
+  const wallet = user?.wallet || 0;
   return (
     <S.DashboardBackground>
       <Header />

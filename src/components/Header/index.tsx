@@ -1,12 +1,16 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import * as S from "./styles";
-import UserCircle from "../UserCircle";
+import { useNavigate } from "react-router-dom";
 
 import logoInter from "../../assets/images/Inter-orange.png";
-import { useNavigate } from "react-router-dom";
+import UserCircle from "../UserCircle";
+import * as S from "./styles";
+import useAuth from "../../hooks/useAuth";
 
 const Header = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const initials = user?.firstName.charAt(0) + user?.lastName.charAt(0);
 
   const handleLogoff = () => {
     navigate("/signin");
@@ -16,12 +20,17 @@ const Header = () => {
       <S.HeaderWrapper>
         <img src={logoInter} width={172} height={61} alt="logo Inter" />
         <S.UserInfo>
-          <UserCircle initials="PF" />
+          <UserCircle initials={initials} />
           <div>
             <p>
-              Olá, <span className="primary-color font-bold">Andoly</span>
+              Olá,{" "}
+              <span className="primary-color font-bold">
+                {user.firstName} {user.lastName}
+              </span>
             </p>
-            <strong>21001243-1</strong>
+            <strong>
+              {user.accountNumber}-{user.accountDigit}
+            </strong>
             <br />
             <a href="#" onClick={handleLogoff}>
               Sair
